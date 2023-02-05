@@ -24,7 +24,7 @@ class Author(models.Model):
         self.save()
 
     def __str__(self):
-        return f'{self.authorUser.user_set.username}'
+        return f'{self.authorUser.username}'
 
 
 class Category(models.Model):
