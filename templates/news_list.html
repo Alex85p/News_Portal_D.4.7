@@ -15,26 +15,79 @@ Posts
    <h1>Все новости</h1>
    <h3>{{ time_now|date:'M d Y' }}</h3>
    <hr>
+   <a href="{% url 'news_create'%}">Создать новость</a>
+    <br>
+   <a href="{% url 'ar_create'%}">Создать статью</a>
+   <hr>
    {% if posts %}
        <table>
            <tr>
                <td>Название</td>
                <td>Дата публикации</td>
+               <td>Тип</td>
+               <td>Категория</td>
                <td>Текст</td>
            </tr>
            {% for post in posts %}
-           <tr>
-               <!-- Не забываем, что переменные в шаблоне ничем не отличаются
-                от переменных в Python. Здесь также можно получать доступ к
-                полям объекта модели. Например, здесь мы выводим имя,
-                в следующем столбце описание, и т.д.  -->
-               <td>{{ post.title|censor }}</td>
-               <td>{{ post.dateCreation }}</td>
-               <td>{{ post.text|truncatechars:20|censor }}</td>
-           </tr>
+                  <tr>
+                      <td>{{ post.title|censor }}</td>
+                      <td>{{ post.dateCreation }}</td>
+                      <td>{{ post.category_type }}</td>
+                      <td>{% for cat in post.postCategory.all %}
+                             {{ cat.name }}
+                          {% endfor %}</td>
+                      <td>{{ post.text|truncatechars:20|censor }}</td>
+
+                      {% if post.category_type == 'NE' %}
+                        <td>
+                        <a href="{% url 'post_detail' post.id %}">Просмотр</a>
+                        </td>
+                        <td>/<td>
+                        <td>
+                        <a href="{% url 'news_update' post.id %}">Редактировать</a>
+                        </td>
+                        <td>/<td>
+                        <td>
+                        <a href="{% url 'news_delete' post.id %}">Удалить</a>
+                        </td>
+                      {% elif post.category_type == 'AR' %}
+                        <td>
+                        <a href="{% url 'ar_detail' post.id %}">Просмотр</a>
+                        </td>
+                        <td>/<td>
+                        <td>
+                        <a href="{% url 'ar_update' post.id %}">Редактировать</a>
+                        </td>
+                        <td>/<td>
+                        <td>
+                        <a href="{% url 'ar_delete' post.id %}">Удалить</a>
+                        </td>
+                      {% endif %}
+
+
+                  </tr>
            {% endfor %}
        </table>
    {% else %}
        <h2>Новостей нет!</h2>
+   {% endif %}
+   {% if page_obj.has_previous %}
+       <a href="?page=1">1</a>
+       {% if page_obj.previous_page_number != 1 %}
+           ...
+           <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+       {% endif %}
+   {% endif %}
+
+   {# Информация о текущей странице #}
+   {{ page_obj.number }}
+
+   {# Информация о следующих страницах #}
+   {% if page_obj.has_next %}
+       <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+       {% if paginator.num_pages != page_obj.next_page_number %}
+           ...
+           <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+       {% endif %}
    {% endif %}
 {% endblock content %}

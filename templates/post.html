@@ -8,6 +8,9 @@ Post
 
 {% block content %}
 <h1>{{ post.title|censor }}</h1>
+<h1>{% for cat in post.postCategory.all %}
+                   {{ cat.name }}
+                   {% endfor %}</h1>
 <h1>{{ post.text|censor }}</h1>
 <h1>{{ post.dateCreation }}</h1>
 {% endblock content %}
