@@ -15,9 +15,13 @@ Posts
    <h1>Все новости</h1>
    <h3>{{ time_now|date:'M d Y' }}</h3>
    <hr>
+   {% if perms.news.add_post %}
    <a href="{% url 'news_create'%}">Создать новость</a>
+   {% endif %}
     <br>
+   {% if perms.news.add_post %}
    <a href="{% url 'ar_create'%}">Создать статью</a>
+   {% endif %}
    <hr>
    {% if posts %}
        <table>
@@ -42,26 +46,34 @@ Posts
                         <td>
                         <a href="{% url 'post_detail' post.id %}">Просмотр</a>
                         </td>
+                        {% if perms.news.change_post %}
                         <td>/<td>
                         <td>
                         <a href="{% url 'news_update' post.id %}">Редактировать</a>
                         </td>
+                        {% endif %}
+                        {% if perms.news.delete_post %}
                         <td>/<td>
                         <td>
                         <a href="{% url 'news_delete' post.id %}">Удалить</a>
                         </td>
+                        {% endif %}
                       {% elif post.category_type == 'AR' %}
                         <td>
                         <a href="{% url 'ar_detail' post.id %}">Просмотр</a>
                         </td>
+                        {% if perms.news.change_post %}
                         <td>/<td>
                         <td>
                         <a href="{% url 'ar_update' post.id %}">Редактировать</a>
                         </td>
+                        {% endif %}
+                        {% if perms.news.delete_post %}
                         <td>/<td>
                         <td>
                         <a href="{% url 'ar_delete' post.id %}">Удалить</a>
                         </td>
+                        {% endif %}
                       {% endif %}
 
 
