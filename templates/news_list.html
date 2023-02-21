@@ -15,11 +15,14 @@ Posts
    <h1>Все новости</h1>
    <h3>{{ time_now|date:'M d Y' }}</h3>
    <hr>
+
+
    {% if perms.news.add_post %}
    <a href="{% url 'news_create'%}">Создать новость</a>
    {% endif %}
-    <br>
+
    {% if perms.news.add_post %}
+   <br>
    <a href="{% url 'ar_create'%}">Создать статью</a>
    {% endif %}
    <hr>

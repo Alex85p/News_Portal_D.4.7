@@ -33,6 +33,18 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/contacts/">Contact</a>
                         </li>
+                        {% if user.is_authenticated == False %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/accounts/login">Вход</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/accounts/signup">Регистрация</a>
+                        </li>
+                        {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/accounts/logout">Выход из учетной записи</a>
+                        </li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>
