@@ -12,21 +12,28 @@ Posts
 {% block content %}
 
 
-   <h1>Все новости</h1>
+   <h1>Новости категории {{category}}</h1>
    <h5>{{ time_now|date:'M d Y' }}</h5>
    <hr>
 
-
-   {% if perms.news.add_post %}
-   <a href="{% url 'news_create'%}">Создать новость</a>
+   {% if is_not_subscriber %}
+      <a href="{% url 'subscribe' category.id %}" class="btn btn-secondary btn-sm">Подписаться</a>
+      <br>
+   {% else %}
+       <a href="{% url 'unsubscribe' category.id %}" class="btn btn-secondary btn-sm">Отписаться</a>
+       <br>
    {% endif %}
 
    {% if perms.news.add_post %}
-   <br>
-   <a href="{% url 'ar_create'%}">Создать статью</a>
+      <a href="{% url 'news_create'%}">Создать новость</a>
+   {% endif %}
+
+   {% if perms.news.add_post %}
+      <br>
+      <a href="{% url 'ar_create'%}">Создать статью</a>
    {% endif %}
    <hr>
-   {% if posts %}
+   {% if category_news_list %}
        <table>
            <tr>
                <td>Название</td>
@@ -35,7 +42,7 @@ Posts
                <td>Категория</td>
                <td>Текст</td>
            </tr>
-           {% for post in posts %}
+           {% for post in category_news_list %}
                   <tr>
                       <td>{{ post.title|censor }}</td>
                       <td>{{ post.dateCreation }}</td>

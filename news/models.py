@@ -12,13 +12,13 @@ class Author(models.Model):
         postRat = self.post_set.aggregate(postRating=Sum('rating'))
         pRat = 0
         x = postRat.get('postRating')
-        if x == None:
+        if x is None:
             x = 0
         pRat += x
         commentRat = self.authorUser.comment_set.aggregate(commentRating=Sum('rating'))
         cRat = 0
         y = commentRat.get('commentRating')
-        if y == None:
+        if y is None:
             y = 0
         cRat += y
         self.ratingAuthor = pRat * 3 + cRat
@@ -30,6 +30,7 @@ class Author(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=32, unique=True)
+    subscribers = models.ManyToManyField(User, blank=True, null=True, related_name='categories')
 
     def __str__(self):
         return f'{self.name}'
@@ -72,8 +73,6 @@ class Post(models.Model):
 class PostCategory(models.Model):
     postThrough = models.ForeignKey(Post, on_delete=models.CASCADE)
     categoryThrough = models.ForeignKey(Category, on_delete=models.CASCADE)
-
-
 
 
 class Comment(models.Model):

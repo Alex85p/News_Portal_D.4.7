@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django.contrib.flatpages',
     'fpages',
-    'news',
+    'news.apps.NewsConfig',
     'django_filters',
     'allauth',
     'allauth.account',
@@ -172,3 +172,5 @@ MANAGERS = (
     ('Ivan', 'ivan@yandex.ru'),
     ('Petr', 'petr@yandex.ru'),
 )
+
+SITE_URL = 'http://http://127.0.0.1:8000'

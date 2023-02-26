@@ -32,7 +32,7 @@ Posts
                      <td>{{ post.dateCreation }}</td>
                      <td>{{ post.category_type }}</td>
                      <td>{% for cat in post.postCategory.all %}
-                         {{ cat.name }}
+                         <a href="{% url 'category_list' cat.id %}">{{ cat.name }}</a>
                          {% endfor %}</td>
                      <td>{{ post.text|truncatechars:20|censor }}</td>
                   </tr>
