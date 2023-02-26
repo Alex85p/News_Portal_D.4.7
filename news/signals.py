@@ -11,7 +11,7 @@ def send_notify(preview, pk, title, subscribers):
         'post_created.html',
         {
             'Название': title,
-            'Такст': preview,
+            'Текст': preview,
             'Ссылка': f'{settings.SITE_URL}/news/{pk}'
         }
     )
@@ -23,7 +23,6 @@ def send_notify(preview, pk, title, subscribers):
 @receiver(m2m_changed, sender=PostCategory)
 def post_created(sender, instance, **kwargs):
     if kwargs['action'] == 'post_add':
-        print('Я сигнал!')
         categories = instance.postCategory.all()
         emails = []
 
@@ -47,7 +46,7 @@ def post_created(sender, instance, **kwargs):
         # )
         # html_content = (
         #     f'Заголовок: {instance.title}<br>'
-        #     f'Превью: {instance.texp.preview}<br><br>'
+        #     f'Превью: {instance.text.preview}<br><br>'
         #     f'<a href="http://127.0.0.1{instance.get_absolute_url()}">'
         #     f'Ссылка на публикацию</a>'
         # )

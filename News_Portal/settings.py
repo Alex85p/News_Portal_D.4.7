@@ -114,7 +114,6 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
@@ -154,15 +153,15 @@ ACCOUNT_CONFIRM_EMAIL_ON_GET = True
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
-EMAIL_HOST_USER = "example85p@yandex.ru"
-EMAIL_HOST_PASSWORD = "examplepass"
+EMAIL_HOST_USER = "alexey@yandex.ru"
+EMAIL_HOST_PASSWORD = "somepass"
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 
-DEFAULT_FROM_EMAIL = "HOT NEWS"
+DEFAULT_FROM_EMAIL = "HOTNEWS@mail.com"
 EMAIL_SUBJECT_PREFIX = "HOT NEWS"
 
-SERVER_EMAIL = "example@yandex.ru"
+SERVER_EMAIL = "hot_news@yandex.ru"
 
 ADMINS = (
     ('Alex', 'Alex@yandex.ru'),
@@ -173,4 +172,8 @@ MANAGERS = (
     ('Petr', 'petr@yandex.ru'),
 )
 
-SITE_URL = 'http://http://127.0.0.1:8000'
+SITE_URL = 'http://127.0.0.1:8000'
+
+
+APSCHEDULER_DATETIME_FORMAT = 'N j, y, f:s a'
+APSCHEDULER_RUN_NOW_TIMEOUT = 25
