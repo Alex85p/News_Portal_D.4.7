@@ -9,6 +9,7 @@ from .forms import NewsForm, ArticleForm
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
+from django.core.cache import cache
 
 
 class NewsList(ListView):
@@ -28,6 +29,16 @@ class PostDetail(DetailView):
     model = Post
     template_name = 'post.html'
     context_object_name = 'post'
+    queryset = Post.objects.all()
+
+    def get_object(self, *args, **kwargs):
+        obj = cache.get(f'post-{self.kwargs["pk"]}', None)
+
+        if not obj:
+            obj = super().get_object(queryset=self.queryset)
+            cache.set(f'post-{self.kwargs["pk"]}', obj)
+
+        return obj
 
 
 class PostSearch(ListView):
@@ -106,7 +117,6 @@ class CategoryList(NewsList):
     template_name = 'category_list.html'
     context_object_name = 'category_news_list'
 
-
     def get_queryset(self):
         self.category = get_object_or_404(Category, id=self.kwargs['pk'])
         queryset = Post.objects.filter(postCategory=self.category).order_by('-dateCreation')
@@ -117,6 +127,7 @@ class CategoryList(NewsList):
         context['is_not_subscriber'] = self.request.user not in self.category.subscribers.all()
         context['category'] = self.category
         return context
+
 
 @login_required
 @csrf_protect
@@ -138,6 +149,7 @@ def unsubscribe(request, pk):
 
     message = 'Вы отменили подписку на рассылку новостей категории'
     return render(request, 'subscribe.html', {'category': category, 'message': message})
+
 
 @login_required
 @csrf_protect
