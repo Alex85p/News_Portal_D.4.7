@@ -36,6 +36,11 @@
                         </li>
                     </ul>
                     <ul class="navbar-nav ms-auto">
+                        {% if user.is_staff %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/">Панель админа</a>
+                        </li>
+                        {% endif %}
                         {% if user.is_authenticated == False %}
                         <li class="nav-item">
                             <a class="nav-link" href="/accounts/login">Вход</a>

@@ -36,7 +36,8 @@ Posts
                <td>Текст</td>
            </tr>
            {% for post in posts %}
-                  <tr>
+                  <tr class="{% cycle 'blue' 'white' %}">
+
                       <td>{{ post.title|censor }}</td>
                       <td>{{ post.dateCreation }}</td>
                       <td>{{ post.category_type }}</td>
@@ -78,8 +79,6 @@ Posts
                         </td>
                         {% endif %}
                       {% endif %}
-
-
                   </tr>
            {% endfor %}
        </table>
