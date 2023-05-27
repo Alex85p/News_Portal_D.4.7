@@ -203,18 +203,23 @@ LOGGING = {
     'formatters': {
         'console_formatter': {
             'format': '{asctime} - {levelname} - {message}{pathname}{exc_info}',
+            'style': '{',
         },
         'general_formatter': {
             'format': '{asctime} - {levelname} - {module} - {message}',
+            'style': '{',
         },
         'errors_formatter': {
             'format': '{asctime} - {levelname} - {message}{pathname}{exc_info}',
+            'style': '{',
         },
         'security_formatter': {
             'format': '{asctime} - {levelname} - {module} - {message}',
+            'style': '{',
         },
         'mail_formatter': {
             'format': '{asctime} - {levelname} - {message}{pathname}',
+            'style': '{',
         },
     },
     'filters': {
@@ -252,8 +257,8 @@ LOGGING = {
             'formatter': 'security_formatter',
         },
         'mail_admins': {
-            'class': 'django.utils.log.AdminEmailHandler',
             'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler',
             'formatter': 'mail_formatter',
             'filters': ['require_debug_false'],
         },
