@@ -57,6 +57,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
 ]
@@ -117,7 +118,7 @@ AUTHENTICATION_BACKENDS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru'
 
 TIME_ZONE = 'UTC'
 
@@ -252,7 +253,7 @@ LOGGING = {
         },
         'security_file': {
             'class': 'logging.FileHandler',
-            'level': 'DEBUG',
+            'level': 'INFO',
             'filename': 'security.log',
             'formatter': 'security_formatter',
         },
@@ -266,6 +267,7 @@ LOGGING = {
     'loggers': {
         'django': {
             'handlers': ['console', 'general_file'],
+            'level': 'DEBUG',
             'propagate': True,
         },
         'django.request': {
@@ -295,3 +297,8 @@ LOGGING = {
         },
     },
 }
+
+
+LOCALE_PATHS = [
+    os.path.join(BASE_DIR, 'locale')
+]
