@@ -1,5 +1,5 @@
 {% extends 'flatpages/default.html' %}
-
+{% load tz %}
 {% load custom_filters %}
 
 
@@ -8,15 +8,31 @@ Posts
 {% endblock title %}
 
 
-
 {% block content %}
-
-
+<style>
+       body {background-color: {% if current_time.hour >= 19 or current_time.hour <= 7 %} darkcyan {% else %} white {% endif %};}
+</style>
+    <div align="right" style="margin-right: 50px">
+    {% get_current_timezone as TIME_ZONE %}
+        <form action="" method="POST">
+            {% csrf_token %}
+                <label for="timezone">Time zone:</label>
+                <select name="timezone">
+                    {% for tz in timezones %}
+                        <option value="{{ tz }}"{% if tz == TIME_ZONE %} selected{% endif %}>{{ tz }}</option>
+                    {% endfor %}
+                </select>
+                <input type="submit" value="Set">
+        </form>
+    {{ TIME_ZONE }}
+    {{ current_time|timezone:TIME_ZONE }}
+   </div>
+<div align="right" style="margin-right: 70px" >
+<a href="{% url 'search'%}">Поиск</a>
+</div>
    <h1>Все новости</h1>
    <h5>{{ time_now|date:'M d Y' }}</h5>
    <hr>
-
-
    {% if perms.news.add_post %}
    <a href="{% url 'news_create'%}">Создать новость</a>
    {% endif %}
@@ -27,16 +43,38 @@ Posts
    {% endif %}
    <hr>
    {% if posts %}
-       <table>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        tr:first-child {
+            background-color: green;
+        }
+
+        tr:nth-child(even) {
+            background-color: white;
+        }
+
+        tr:nth-child(odd) {
+            background-color: lightblue;
+        }
+
+        tr:first-child {
+            background-color: green;
+        }
+    </style>
+       <table align="center">
            <tr>
-               <td>Название</td>
-               <td>Дата публикации</td>
-               <td>Тип</td>
-               <td>Категория</td>
-               <td>Текст</td>
+               <td width="20%">Название</td>
+               <td width="15%">Дата публикации</td>
+               <td width="5%">Тип</td>
+               <td width="10%">Категория</td>
+               <td width="35%">Текст</td>
+               <td colspan="7">Действия</td>
            </tr>
            {% for post in posts %}
-                  <tr class="{% cycle 'blue' 'white' %}">
+                  <tr>
 
                       <td>{{ post.title|censor }}</td>
                       <td>{{ post.dateCreation }}</td>
@@ -44,7 +82,7 @@ Posts
                       <td>{% for cat in post.postCategory.all %}
                              <a href="{% url 'category_list' cat.id %}">{{ cat.name }}</a>
                           {% endfor %}</td>
-                      <td>{{ post.text|truncatechars:20|censor }}</td>
+                      <td>{{ post.text|truncatechars:30|censor }}</td>
 
                       {% if post.category_type == 'NE' %}
                         <td>

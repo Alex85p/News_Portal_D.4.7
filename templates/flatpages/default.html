@@ -1,12 +1,18 @@
 <!DOCTYPE html>
 
-<html lang="ru">
+{% load i18n %}
+
+
+<html lang="en">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Bare - Start Bootstrap Template</title>
+        <title>Учебный проект - Skillfactory</title>
+        <style>
+            body {background-color: {% if current_time.hour >= 19 or current_time.hour <= 7 %} darkcyan {% else %} powderblue {% endif %};}
+        </style>
 
         {% load static %}
 
@@ -16,7 +22,7 @@
         <!-- Responsive navbar-->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
             <div class="container">
-                <a class="navbar-brand" href="#">HOT NEWS</a>
+                <a class="navbar-brand" href="#">{% trans "HOT NEWS" %}</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse"
                         data-target="#navbarResponsive"
                         aria-controls="navbarResponsive" aria-expanded="false"
@@ -26,34 +32,34 @@
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item active">
-                            <a class="nav-link" href="/news/">Главная страница</a>
+                            <a class="nav-link" href="/news/">{% trans "Main page" %}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/about/">О проекте</a>
+                            <a class="nav-link" href="/about/">{% trans "About us" %}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/contacts/">Наши контакты</a>
+                            <a class="nav-link" href="/contacts/">{% trans "Contact us" %}</a>
                         </li>
                     </ul>
                     <ul class="navbar-nav ms-auto">
                         {% if user.is_staff %}
                         <li class="nav-item">
-                            <a class="nav-link" href="/admin/">Панель админа</a>
+                            <a class="nav-link" href="/admin/">{% trans "Admin's panel" %}</a>
                         </li>
                         {% endif %}
                         {% if user.is_authenticated == False %}
                         <li class="nav-item">
-                            <a class="nav-link" href="/accounts/login">Вход</a>
+                            <a class="nav-link" href="/accounts/login">{% trans "Login" %}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/accounts/signup">Регистрация</a>
+                            <a class="nav-link" href="/accounts/signup">{% trans "Sign up" %}</a>
                         </li>
                         {% else %}
                         <li class="nav-item">
-                            <a class="nav-link" href="/subscriptions/">Подписки</a>
+                            <a class="nav-link" href="/subscriptions/">{% trans "Subscriptions" %}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/accounts/logout">Выход из учетной записи</a>
+                            <a class="nav-link" href="/accounts/logout">{% trans "Logout" %}</a>
                         </li>
                         {% endif %}
                     </ul>
@@ -61,7 +67,27 @@
             </div>
         </nav>
         <!-- Page content-->
-        <div class="container">
+        <div align="right" style="margin-right: 150px">
+            <form action="{% url 'set_language' %}" method="POST"> {% csrf_token %} <!-- Не забываем по csrf_token для POST запросов -->
+                <input type="hidden" name="next" value="{{ redirect_to }}">
+                {% get_current_language as LANGUAGE_CODE %}
+
+                <select name="language" id="">
+                    {% get_available_languages as LANGUAGES %} <!-- получаем языки -->
+                    {% get_language_info_list for LANGUAGES as languages %} <!-- Помещаем их в список languages -->
+
+                    {% for language in languages %} <!-- Итерируясь по списку, выводим их название на языке пользователя и код -->
+                        <option value="{{ language.code }}" {% if language.code == LANGUAGE_CODE %} selected {% endif %}>
+                            {{ language.name_local }} - {{ language.code }}
+                        </option>
+                    {% endfor %}
+                </select>
+                <input type="submit" value="set">
+            </form>
+                {{ string }}
+                {% trans "Choise your language" %}!
+        </div>
+        <div class="container" align="center">
             <div class="row">
                 <div class="col-lg-12 text-center">
                     {% block content %}
